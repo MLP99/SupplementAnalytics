@@ -58,32 +58,16 @@ def extract_data(url: str) -> pd.DataFrame:
              'image_url': image_url,
              'date': datetime.now()
             }, index=[0])
-   
-    try:
-        macro = pd.DataFrame(
-        (e.stripped_strings for e in soup.select('table tr:not(:has(th,td.sub-label,td[colspan]))')),
-        ).set_index(0).T
-        macro.columns = ['energy', 'fats', 'carbs', 'fibers', 'protein','salt']
-    except AttributeError:
-        macro = None
 
-    df.reset_index(drop=True, inplace=True)
-    
-    if macro is not None:
-        macro.reset_index(drop=True, inplace=True)
-        df_concat = pd.concat([df, macro], axis=1)
-    else:
-        df_concat = df
+    print(df)
+    print(df['date'])
 
-    print(df_concat)
-    print(df_concat['date'])
-
-    return df_concat
+    return df
 
 
 def main():
     jumbo_chicken = extract_data('https://www.jumbo.com/producten/jumbo-scharrelkip-filet-800g-515026BAK')
-    jumbo_chicken.to_csv('data/jumbo_chicken.csv', index=False)
+    #jumbo_chicken.to_csv('data/jumbo_chicken.csv', index=False)
 
 if __name__ == "__main__":
     main()
